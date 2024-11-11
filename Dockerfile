@@ -16,8 +16,8 @@ WORKDIR /app
 # Copy the Pipfile and Pipfile.lock first to leverage Docker cache
 COPY Pipfile Pipfile.lock /app/
 
-# Install dependencies using pipenv
-RUN pipenv install --deploy --ignore-pipfile
+# Install dependencies using pipenv with Python 3.10 explicitly
+RUN pipenv install --deploy --ignore-pipfile --python /usr/local/bin/python3.10
 
 # Copy the rest of the project files into the container
 COPY . /app

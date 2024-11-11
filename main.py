@@ -13,6 +13,7 @@ from utils.swap import get_swap_usage
 from utils.disk_io import get_disk_io
 from utils.network_io import get_network_io
 from utils.system_load import get_system_load
+from utils.disk_space import get_disk_space
 
 # Other libs
 import logging
@@ -35,6 +36,7 @@ def main():
             disk_io_data = get_disk_io()
             network_io_data = get_network_io()
             system_load_data = get_system_load()
+            disk_space_data = get_disk_space()
             
             # Creating Points
             cpu_point = (
@@ -81,6 +83,19 @@ def main():
                 .field("15_min", system_load_data['15_min'])
                 .time(datetime.utcnow())
             )
+            
+            for partition, data in disk_space_data.items():
+                partition_point = (
+                    Point("disk_space_analyze")
+                    .tag("partition", partition)
+                    .field("total", data['total'])
+                    .field("used", data['used'])
+                    .field("free", data['free'])
+                    .field("percent", data['percent'])
+                    .time(datetime.utcnow())
+                )
+                
+                write_api.write(bucket=DB['bucket'], org=DB['org'], record=partition_point)
 
             # Writing Points
             write_api.write(bucket=DB['bucket'], org=DB['org'], record=cpu_point)
@@ -97,6 +112,7 @@ def main():
             logging.info(f"Disk I/O Data Written: {disk_io_data}")
             logging.info(f"Network I/O Data Written: {network_io_data}")
             logging.info(f"System Load Data Written: {system_load_data}")
+            logging.info(f"Disk Space Data Written: {disk_space_data}")
 
             time.sleep(1)
     except Exception as e:

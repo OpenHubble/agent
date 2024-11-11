@@ -1,0 +1,5 @@
+psutil
+influxdb-client
+matplotlib
+flask
+flask-cors

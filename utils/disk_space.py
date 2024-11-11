@@ -47,5 +47,3 @@ def get_disk_space():
         }
 
     return partition_data
-
-print(get_disk_space())

@@ -31,25 +31,14 @@ Dependencies:
 
 import psutil
 
-# def get_disk_space():
-#     partitions = psutil.disk_partitions()
-#     disk_usage = {}
-#     for partition in partitions:
-#         if partition.mountpoint == "/System/Volumes/Data":  # Use the specific mount point you want
-#             usage = psutil.disk_usage(partition.mountpoint)
-#             disk_usage[partition.device] = {
-#                 "total": usage.total,
-#                 "used": usage.used,
-#                 "free": usage.free,
-#                 "percent": usage.percent
-#             }
-#     return disk_usage
-
 def get_disk_space():
     partitions = psutil.disk_partitions()
     partition_data = {}
 
     for partition in partitions:
+        # Exclude loop and overlay devices
+        if 'loop' in partition.device or 'overlay' in partition.device:
+            continue
         usage = psutil.disk_usage(partition.mountpoint)
         partition_data[partition.device] = {
             'total': usage.total,
@@ -59,5 +48,20 @@ def get_disk_space():
         }
 
     return partition_data
+
+# def get_disk_space():
+#     partitions = psutil.disk_partitions()
+#     partition_data = {}
+
+#     for partition in partitions:
+#         usage = psutil.disk_usage(partition.mountpoint)
+#         partition_data[partition.device] = {
+#             'total': usage.total,
+#             'used': usage.used,
+#             'free': usage.free,
+#             'percent': usage.percent
+#         }
+
+#     return partition_data
 
 print(get_disk_space())

@@ -1,5 +1,2 @@
 psutil
-influxdb-client
-matplotlib
-flask
-flask-cors
+requests

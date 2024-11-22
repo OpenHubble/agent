@@ -10,14 +10,14 @@ from utils.network_io import get_network_io
 from utils.system_load import get_system_load
 from utils.disk_space import get_disk_space
 
-from config.config import API_ENDPOINT, SERVER_ID, ACCESS_TOKEN
+from config.config import API_ENDPOINT, HOST_ID, ACCESS_TOKEN
 
 def send_metrics_to_server(metrics):
     try:
         payload = json.dumps(metrics)
         headers = {
-            'accessToken': ACCESS_TOKEN,
-            'serverID': SERVER_ID,
+            'accesstoken': ACCESS_TOKEN,
+            'hostid': HOST_ID,
             'Content-Type': 'application/json',
         }
         

@@ -6,6 +6,8 @@ name = "pypi"
 [packages]
 psutil = "*"
 requests = "*"
+flask = "*"
+flask-cors = "*"
 
 [dev-packages]
 

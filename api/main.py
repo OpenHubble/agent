@@ -22,7 +22,7 @@ CORS(app)
 def ping():
     response = {}
 
-    response['message'] = "ping"
+    response['message'] = "pong"
 
     return jsonify(response), 200
 

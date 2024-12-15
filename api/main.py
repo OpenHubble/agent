@@ -11,11 +11,17 @@ from api.utils.network_io import get_network_io
 from api.utils.system_load import get_system_load
 from api.utils.disk_space import get_disk_space
 
+# Middlewares
+from api.middlewares.ip import allowed_ip
+
 # Init app
 app = Flask(__name__)
 
 # Set CORS
 CORS(app)
+
+@app.before_request
+@allowed_ip
 
 # Ping
 @app.route('/api/ping', methods=['GET'])

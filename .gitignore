@@ -133,3 +133,5 @@ dmypy.json
 
 # Ignore any other files or directories specific to your development environment
 test
+
+agent.ini

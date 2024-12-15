@@ -1,9 +1,22 @@
 # Import Config Parser
 import configparser
 
+# Import OS lib
+import os
+
+APP_MODE = os.getenv("AGENT_APP_MODE", "PRODUCTION")
+
+IS_PRODUCTION = True if str(APP_MODE) == "PRODUCTION" else False
+
 # Specify Path and name
 CONFIG_FILE_NAME = "agent.ini"
-CONFIG_FILE_PATH = "/Users/amirhosseinmohammadi/Projects/amirhossein/amir-monitoring/agent"
+CONFIG_FILE_PATH = ""
+
+# Check path
+if IS_PRODUCTION:
+    CONFIG_FILE_PATH = "/etc/agent"
+else:
+    CONFIG_FILE_PATH = "/Users/amirhosseinmohammadi/Projects/amirhossein/amir-monitoring/agent"
 
 # Init Config
 config = configparser.ConfigParser()

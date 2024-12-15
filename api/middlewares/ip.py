@@ -9,9 +9,7 @@ def allowed_ip(func):
     @wraps(func)
     def decorated_function(*args, **kwargs):
         client_ip = request.remote_addr
-        
-        print(client_ip)
-        
+                
         ALLOWED_IP_RANGES = [ipaddress.ip_network(ip.strip()) for ip in config.ALLOWED_IPS]
         
         if not any(ipaddress.ip_address(client_ip) in network for network in ALLOWED_IP_RANGES):

@@ -20,10 +20,8 @@ app = Flask(__name__)
 # Set CORS
 CORS(app)
 
-@app.before_request
-@allowed_ip
-
 # Ping
+@allowed_ip
 @app.route('/api/ping', methods=['GET'])
 def ping():
     response = {}
@@ -32,6 +30,8 @@ def ping():
 
     return jsonify(response), 200
 
+# Metrics
+@allowed_ip
 @app.route('/api/metrics', methods=['GET'])
 def metrics():
     response = {}

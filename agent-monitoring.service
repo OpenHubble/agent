@@ -3,7 +3,7 @@ Description=Amir Monitoring Agent
 After=network.target
 
 [Service]
-User=your_username
+User=root
 WorkingDirectory=/apps/agent
 ExecStart=/apps/agent/.venv/bin/python3 /apps/agent/wsgi.py
 Restart=always

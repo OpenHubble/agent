@@ -1,0 +1,13 @@
+[Unit]
+Description=Amir Monitoring Agent
+After=network.target
+
+[Service]
+User=your_username
+WorkingDirectory=/apps/agent
+ExecStart=/apps/agent/.venv/bin/python3 wsgi.py
+Restart=always
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target

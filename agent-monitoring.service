@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=your_username
 WorkingDirectory=/apps/agent
-ExecStart=/apps/agent/.venv/bin/python3 wsgi.py
+ExecStart=/apps/agent/.venv/bin/python3 /apps/agent/wsgi.py
 Restart=always
 Environment="PYTHONUNBUFFERED=1"
 

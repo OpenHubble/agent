@@ -14,7 +14,7 @@ cd /apps/agent
 
 cp -r agent.ini.example agent.ini
 
-nano /apps/agent/agent.ini
+# nano /apps/agent/agent.ini
 
 mkdir -p /etc/agent
 
@@ -22,8 +22,12 @@ cp -r /apps/agent/agent.ini /etc/agent
 
 python3 -m venv .venv
 
-source .venv/bin/activate
+/apps/agent/.venv/bin/python3 -m pip install -r requirements.txt
 
-pip3 install -r requirements.txt
+cp /apps/agent/agent-monitoring.service /etc/systemd/system/
 
-python3 wsgi.py
+systemctl daemon-reload
+
+systemctl enable agent-monitoring.service
+
+systemctl start agent-monitoring.service

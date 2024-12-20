@@ -8,15 +8,24 @@ APP_MODE = os.getenv("AGENT_APP_MODE", "PRODUCTION")
 
 IS_PRODUCTION = True if str(APP_MODE) == "PRODUCTION" else False
 
-# Specify Path and name
+# Config file: Specify Path and name
 CONFIG_FILE_NAME = "agent.ini"
 CONFIG_FILE_PATH = ""
+
+# Log file: Specify Path and name
+LOG_FILE_NAME = "agent.log"
+LOG_FILE_PATH = ""
 
 # Check path
 if IS_PRODUCTION:
     CONFIG_FILE_PATH = "/etc/agent"
+    LOG_FILE_PATH = "/var/logs/agent"
 else:
     CONFIG_FILE_PATH = "/Users/amirhosseinmohammadi/Projects/amirhossein/amir-monitoring/agent"
+    LOG_FILE_PATH = "."
+    
+# Log file
+LOG_DESTINATION = f"{LOG_FILE_PATH}/{LOG_FILE_NAME}"
 
 # Init Config
 config = configparser.ConfigParser()

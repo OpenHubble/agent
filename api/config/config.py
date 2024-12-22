@@ -8,6 +8,8 @@ APP_MODE = os.getenv("AGENT_APP_MODE", "PRODUCTION")
 
 IS_PRODUCTION = True if str(APP_MODE) == "PRODUCTION" else False
 
+print(IS_PRODUCTION, APP_MODE)
+
 # Config file: Specify Path and name
 CONFIG_FILE_NAME = "agent.ini"
 CONFIG_FILE_PATH = ""

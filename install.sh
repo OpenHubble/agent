@@ -1,33 +1,39 @@
 #!/bin/sh
 
+set -e
+set -u
+
+echo "Updating package lists and installing dependencies..."
 apt update -y
-apt upgrade -y
+apt install -y git python3 python3-venv python3-pip
 
-apt install python3 python3-venv python3-pip -y
+INSTALL_DIR="/opt/agent"
+CONFIG_DIR="/etc/agent"
+LOG_DIR="/var/logs/agent"
+SERVICE_FILE="/etc/systemd/system/agent-monitoring.service"
+REPO_URL="https://gitlab.com/BlackIQ/amir-monitoring-agent"
 
-mkdir -p /opt
-cd /opt
+echo "Cloning repository to $INSTALL_DIR..."
+mkdir -p "$INSTALL_DIR"
+git clone "$REPO_URL" "$INSTALL_DIR"
 
-git clone https://gitlab.com/BlackIQ/amir-monitoring-agent agent
+echo "Setting up configuration..."
+cp "$INSTALL_DIR/agent.ini.example" "$INSTALL_DIR/agent.ini"
+mkdir -p "$CONFIG_DIR"
+cp "$INSTALL_DIR/agent.ini" "$CONFIG_DIR"
 
-cd /opt/agent
+mkdir -p "$LOG_DIR"
 
-cp -r agent.ini.example agent.ini
+echo "Setting up Python virtual environment..."
+python3 -m venv "$INSTALL_DIR/.venv"
+"$INSTALL_DIR/.venv/bin/python3" -m pip install --no-cache-dir -r "$INSTALL_DIR/requirements.txt"
 
-# nano /opt/agent/agent.ini
-
-mkdir -p /etc/agent
-
-cp -r /opt/agent/agent.ini /etc/agent
-
-python3 -m venv .venv
-
-/opt/agent/.venv/bin/python3 -m pip install -r requirements.txt
-
-cp /opt/agent/agent-monitoring.service /etc/systemd/system/
-
+echo "Setting up systemd service..."
+cp "$INSTALL_DIR/agent-monitoring.service" "$SERVICE_FILE"
 systemctl daemon-reload
-
 systemctl enable agent-monitoring.service
 
+echo "Starting the agent-monitoring service..."
 systemctl start agent-monitoring.service
+
+echo "Installation completed successfully."

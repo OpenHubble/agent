@@ -15,7 +15,7 @@ from api.utils.disk_space import get_disk_space
 from api.middlewares.ip import allowed_ip
 
 # Config
-from api.config.config import HOST_NAME
+import api.config.config as config
 
 # Init app
 app = Flask(__name__)
@@ -40,7 +40,8 @@ def metrics():
     response = {}
     
     metrics = {
-        "hostnme": HOST_NAME,
+        "hostnme": config.HOST_NAME,
+        "version": config.AGENT_VERSION,
         "cpu": get_cpu_usage(),
         "memory": get_memory_usage(),
         "swap": get_swap_usage(),

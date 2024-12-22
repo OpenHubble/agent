@@ -1,6 +1,11 @@
+# Logging
 import logging
 from logging.handlers import RotatingFileHandler
+
+# Main API
 from api.main import app
+
+# Config
 import api.config.config as config
 
 log_file = config.LOG_DESTINATION
@@ -18,7 +23,7 @@ flask_log.addHandler(handler)
 flask_log.setLevel(logging.INFO)
 
 app.logger.info("Agent application started!")
-app.logger.info("Agent Version: 1.0.0")
+app.logger.info(f"Agent Version: {config.AGENT_VERSION}")
 app.logger.info("Amirhossein Mohammadi LTD - 2024")
 
 if __name__ == "__main__":

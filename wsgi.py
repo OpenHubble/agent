@@ -18,6 +18,8 @@ flask_log.addHandler(handler)
 flask_log.setLevel(logging.INFO)
 
 app.logger.info("Agent application started!")
+app.logger.info("Agent Version: 1.0.0")
+app.logger.info("Amirhossein Mohammadi LTD - 2024")
 
 if __name__ == "__main__":
     app.run(config.BIND_IP, port=config.PORT, debug=True)

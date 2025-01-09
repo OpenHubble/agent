@@ -130,4 +130,4 @@ This software was modified from the original **OpenHubble Agent** (https://githu
 
 ---
 
-[OpenHubble](https://openhubble.com) by [Amirhossein Mohammadi](https://amirhossein.info) - 2024
+[OpenHubble](https://openhubble.com) by [Amirhossein Mohammadi](https://amirhossein.info) - 2025

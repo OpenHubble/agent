@@ -24,7 +24,7 @@ flask_log.setLevel(logging.INFO)
 
 app.logger.info("Agent application started!")
 app.logger.info(f"Agent Version: {config.AGENT_VERSION}")
-app.logger.info("OpenHubble LTD By Amirhossein Mohammadi - 2024")
+app.logger.info("OpenHubble By Amirhossein Mohammadi - 2025")
 
 if __name__ == "__main__":
     app.run(config.BIND_IP, port=config.PORT, debug=True)

@@ -1,3 +1,3 @@
-# Amir Monitoring Agent
+# OpenHubble Monitoring Agent
 
-The **Amir Monitoring Agent**.
+The **OpenHubble Monitoring Agent**.

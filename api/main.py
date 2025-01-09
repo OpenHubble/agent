@@ -54,3 +54,12 @@ def metrics():
     response['metrics'] = metrics
 
     return jsonify(response), 200
+
+# Handle 404 Error
+@app.errorhandler(404)
+def not_found(e):
+    response = {
+        "message": "404 - Not found"
+    }
+
+    return jsonify(response), 404

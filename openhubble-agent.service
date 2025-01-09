@@ -1,0 +1,13 @@
+[Unit]
+Description=OpenHubble Monitoring Agent
+After=network.target
+
+[Service]
+User=root
+WorkingDirectory=/opt/openhubble-agent
+ExecStart=/opt/openhubble-agent/.venv/bin/python3 /opt/openhubble-agent/wsgi.py
+Restart=always
+Environment="PYTHONUNBUFFERED=1"
+
+[Install]
+WantedBy=multi-user.target

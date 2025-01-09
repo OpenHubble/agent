@@ -1,9 +1,0 @@
-[Server]
-ALLOWED_IPS = 10.1.1.0/24, 10.1.40.24
-
-[Agent]
-BIND_IP = 0.0.0.0
-PORT = 9703
-
-[Host]
-HOSTNAME = AMCE Agent Server

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import argparse
 from art import text2art
 from termcolor import cprint

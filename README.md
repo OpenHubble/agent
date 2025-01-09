@@ -55,6 +55,32 @@ The service status should indicate it is `active (running)`.
 
 ---
 
+## Configuring the Firewall (UFW)
+
+After installing the OpenHubble Agent, ensure that your firewall allows incoming traffic on the port the agent is listening to (default is `9703`). If you have changed the port in the configuration file, substitute `9703` with the new port number.
+
+To allow the default port (`9703`), run the following command:
+
+```bash
+sudo ufw allow 9703/tcp
+```
+
+If you have configured the agent to use a different port (e.g., `12345`), run the following command instead:
+
+```bash
+sudo ufw allow 12345/tcp
+```
+
+This will allow access to the agent's API. After running the appropriate command, you can check the status of your firewall with:
+
+```bash
+sudo ufw status
+```
+
+Make sure the port you specified is listed as allowed.
+
+---
+
 ## Updating the Agent
 
 The OpenHubble Agent can be updated using the built-in CLI tool. Run the following command with **root** privileges:

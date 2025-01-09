@@ -2,6 +2,14 @@
 
 Lightweight **monitoring agent** written in **Python** with **Flask**, designed to collect system metrics and expose an API for data retrieval and visualization. Includes installation, configuration, update, and uninstallation guides.
 
+Got it! Here's a revised version of the paragraph that starts with "Before everything" and includes the installation context:
+
+## Built-in Command-Line Tool
+
+Before everything else, you should know that this agent includes a built-in command-line tool, `openhubble-agent`, which allows you to manage the agent and interact with its services directly from the terminal. This tool enables you to start, stop, restart, and check the status of the agent, view logs, and perform other management tasks.
+
+For detailed instructions on how to install and use the command-line tool, please refer to the [CLI documentation](https://github.com/OpenHubble/agent/blob/main/docs/cli.md).
+
 ## Installing the Agent
 
 To install the **OpenHubble Agent**, follow these steps:
@@ -48,6 +56,11 @@ After editing the configuration file, restart the service to apply the changes:
 ```bash
 sudo systemctl restart openhubble-agent.service
 ```
+
+> Also you can restart service using **built-in command-line tool**!
+> ```bash
+> openhubble-agent restart
+> ```
 
 ### 5. Verify Installation
 

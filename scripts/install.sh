@@ -49,6 +49,14 @@ echo "Installing modules..."
   exit 1
 }
 
+# Make cli.py executable
+echo "Making cli.py executable..."
+chmod +x /opt/openhubble-agent/cli.py
+
+# Create a symbolic link to make openhubble-agent command available
+echo "Creating symbolic link for openhubble-agent command..."
+ln -sf /opt/openhubble-agent/cli.py /usr/local/bin/openhubble-agent
+
 # Copy the service file for systemctl
 echo "Setting up service..."
 cp /opt/openhubble-agent/openhubble-agent.service /etc/systemd/system/ || {

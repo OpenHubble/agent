@@ -28,4 +28,8 @@ rm -rf /opt/openhubble-agent
 rm -rf /etc/openhubble-agent
 rm -rf /var/log/openhubble-agent
 
+# Remove the symbolic link for openhubble-agent
+echo "Removing symbolic link..."
+rm -f /usr/local/bin/openhubble-agent
+
 echo "OpenHubble Agent has been uninstalled successfully."

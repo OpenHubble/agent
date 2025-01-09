@@ -10,7 +10,7 @@ To install the **OpenHubble Agent**, follow these steps:
 Use `curl` to fetch the installation script and run it with **root** privileges:
 
 ```bash
-curl -s https://get.openhubble.com/install.sh | sudo bash
+curl -s https://get.openhubble.com | sudo bash
 ```
 
 This script will:

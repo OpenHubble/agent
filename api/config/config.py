@@ -12,20 +12,20 @@ IS_PRODUCTION = True if str(APP_MODE) == "PRODUCTION" else False
 AGENT_VERSION = "1.0.0"
 
 # Config file: Specify Path and name
-CONFIG_FILE_NAME = "agent.ini"
+CONFIG_FILE_NAME = "openhubble-agent.ini"
 CONFIG_FILE_PATH = ""
 
 # Log file: Specify Path and name
-LOG_FILE_NAME = "agent.log"
+LOG_FILE_NAME = "openhubble-agent.log"
 LOG_FILE_PATH = ""
 
 # Check path
 if IS_PRODUCTION:
-    CONFIG_FILE_PATH = "/etc/agent"
-    LOG_FILE_PATH = "/var/logs/agent"
+    CONFIG_FILE_PATH = "/etc/openhubble-agent"
+    LOG_FILE_PATH = "/var/log/openhubble-agent"
 else:
-    CONFIG_FILE_PATH = "/Users/amirhosseinmohammadi/Projects/amirhossein/amir-monitoring/agent"
-    LOG_FILE_PATH = "."
+    CONFIG_FILE_PATH = "./test"
+    LOG_FILE_PATH = "./test"
     
 # Log file
 LOG_DESTINATION = f"{LOG_FILE_PATH}/{LOG_FILE_NAME}"

@@ -5,6 +5,8 @@ from termcolor import cprint
 from rich.console import Console
 from rich_gradient import Gradient
 
+import api.config.config as config
+
 console = Console()
 
 def print_art():
@@ -59,9 +61,8 @@ def uninstall():
     cprint("Uninstalling the service...", "red")
 
 def version():
-    cprint("Service version: 1.0.0", "cyan", attrs=["bold"])
+    cprint(f"OpenHubble Agent {config.AGENT_VERSION}", "cyan", attrs=["bold"])
 
-# Custom ArgumentParser to include the ASCII art
 class CustomArgumentParser(argparse.ArgumentParser):
     def print_help(self):
         print_art()

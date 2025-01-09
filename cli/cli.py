@@ -43,6 +43,7 @@ def print_art():
         )
     )
 
+
 # Function to start the service using systemctl
 def start():
     cprint("Starting the service...", "green")
@@ -65,10 +66,14 @@ def status():
 
 # Function to show logs from the service, with an option to follow the log output
 def logs(follow):
+    log_file = "/var/log/openhubble-agent/openhubble-agent.log"
+    
     if follow:
         cprint("Showing logs and following the output...", "magenta")
+        subprocess.run(["tail", "-f", log_file])  # Follow the logs
     else:
         cprint("Showing logs...", "magenta")
+        subprocess.run(["tail", "-n", "10", log_file])  # Show last 10 lines of logs
 
 # Function to update the service by running the update.sh script
 def update():

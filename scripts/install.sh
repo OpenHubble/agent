@@ -30,7 +30,7 @@ git clone https://github.com/OpenHubble/agent . || {
 
 # Copy the config file to the config directory
 echo "Setting up configurations..."
-cp example/agent.ini.example /etc/openhubble-agent/openhubble-agent.ini || {
+cp example/openhubble.ini.example /etc/openhubble-agent/openhubble-agent.ini || {
   echo "Failed to copy configuration file."
   exit 1
 }

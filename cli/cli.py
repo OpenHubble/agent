@@ -70,13 +70,35 @@ def logs(follow):
     else:
         cprint("Showing logs...", "magenta")
 
-# Function to update the service
+# Function to update the service by running the update.sh script
 def update():
-    cprint("Updating the service...", "green")
+    cprint("Updating the service...", "blue")
+    
+    # Confirmation prompt
+    confirmation = input("Are you sure you want to update the service? (yes/no): ").strip().lower()
+    
+    if confirmation in ["yes", "y"]:
+        update_script = "/opt/openhubble-agent/scripts/update.sh"
+        
+        subprocess.run(["sudo", update_script])  # Run the update script
+        cprint("Service updated successfully.", "green")
+    else:
+        cprint("Updating aborted.", "yellow")
 
-# Function to uninstall the service
+# Function to uninstall the service with a user confirmation prompt
 def uninstall():
     cprint("Uninstalling the service...", "red")
+    
+    # Confirmation prompt
+    confirmation = input("Are you sure you want to uninstall the service? (yes/no): ").strip().lower()
+    
+    if confirmation in ["yes", "y"]:
+        uninstall_script = "/opt/openhubble-agent/scripts/uninstall.sh"
+        
+        subprocess.run(["sudo", uninstall_script])  # Run the uninstall script
+        cprint("Service uninstalled successfully.", "green")
+    else:
+        cprint("Uninstallation aborted.", "yellow")
 
 # Function to display the version of the service
 def version():

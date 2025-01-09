@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 
-import argparse
-from art import text2art
-from termcolor import cprint
+# Import necessary libraries
 
-from rich.console import Console
-from rich_gradient import Gradient
+import argparse  # Argument parsing
+import subprocess  # Executing system commands like systemctl
 
-import api.config.config as config
+from art import text2art  # To generate ASCII art
+from termcolor import cprint  # Colored terminal printing
+from rich.console import Console  # Enhanced terminal output
+from rich_gradient import Gradient  # Gradient effects in text output
 
+import api.config.config as config  # Configuration of agent
+
+# Initialize the rich console for pretty output
 console = Console()
 
+# Function to print ASCII art
 def print_art():
     openhubble_art = text2art("OpenHubble")
     agent_art = text2art("Agent")
@@ -38,47 +43,64 @@ def print_art():
         )
     )
 
+# Function to start the service using systemctl
 def start():
     cprint("Starting the service...", "green")
+    subprocess.run(["sudo", "systemctl", "start", "openhubble-agent.service"])
 
+# Function to stop the service using systemctl
 def stop():
     cprint("Stopping the service...", "red")
+    subprocess.run(["sudo", "systemctl", "stop", "openhubble-agent.service"])
 
+# Function to restart the service using systemctl
 def restart():
     cprint("Restarting the service...", "yellow")
+    subprocess.run(["sudo", "systemctl", "restart", "openhubble-agent.service"])
 
+# Function to check the status of the service using systemctl
 def status():
     cprint("Checking the service status...", "blue")
+    subprocess.run(["sudo", "systemctl", "status", "openhubble-agent.service"])
 
+# Function to show logs from the service, with an option to follow the log output
 def logs(follow):
     if follow:
         cprint("Showing logs and following the output...", "magenta")
     else:
         cprint("Showing logs...", "magenta")
 
+# Function to update the service
 def update():
     cprint("Updating the service...", "green")
 
+# Function to uninstall the service
 def uninstall():
     cprint("Uninstalling the service...", "red")
 
+# Function to display the version of the service
 def version():
     cprint(f"OpenHubble Agent {config.AGENT_VERSION}", "cyan", attrs=["bold"])
 
+# Custom argument parser to enhance the help output
 class CustomArgumentParser(argparse.ArgumentParser):
     def print_help(self):
         print_art()
         super().print_help()
 
+# Main function to handle command-line arguments and trigger the corresponding actions
 def main():
+    # Initialize the argument parser with a description
     parser = CustomArgumentParser(description="OpenHubble CLI Agent Manager.")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
+    # Define subcommands and their corresponding help descriptions
     subparsers.add_parser("start", help="Start the service")
     subparsers.add_parser("stop", help="Stop the service")
     subparsers.add_parser("restart", help="Restart the service")
     subparsers.add_parser("status", help="Get the status of the service")
 
+    # Define subcommand for logs, with an optional argument to follow the logs
     logs_parser = subparsers.add_parser("logs", help="Show logs")
     logs_parser.add_argument("-f", "--follow", action="store_true", help="Follow the logs")
 
@@ -87,8 +109,10 @@ def main():
     subparsers.add_parser("help", help="Show help information")
     subparsers.add_parser("version", help="Show the version of the service")
 
+    # Parse the arguments passed to the script
     args = parser.parse_args()
 
+    # Handle the execution of different commands based on the user's input
     if args.command == "start":
         start()
     elif args.command == "stop":
@@ -110,5 +134,6 @@ def main():
     else:
         parser.print_help()
 
+# Entry point to execute the script
 if __name__ == "__main__":
     main()

@@ -23,7 +23,7 @@ cd /opt/openhubble-agent
 
 # Clone the project using git
 echo "Cloning the project..."
-git clone https://gitlab.com/BlackIQ/amir-monitoring-agent . || {
+git clone https://github.com/OpenHubble/agent . || {
   echo "Git clone failed."
   exit 1
 }

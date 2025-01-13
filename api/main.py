@@ -2,7 +2,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 
-# Import utils
+# Import host utils
 from api.utils.host.cpu import get_cpu_usage
 from api.utils.host.memory import get_memory_usage
 from api.utils.host.swap import get_swap_usage
@@ -10,6 +10,9 @@ from api.utils.host.disk_io import get_disk_io
 from api.utils.host.network_io import get_network_io
 from api.utils.host.system_load import get_system_load
 from api.utils.host.disk_space import get_disk_space
+
+# Import docker utils
+from api.utils.docker.docker import get_docker_metrics
 
 # Middlewares
 from api.middlewares.ip import allowed_ip
@@ -83,17 +86,7 @@ def host_metrics():
 def docker_metrics():
     response = {}
     
-    metrics = {
-        "hostnme": config.HOST_NAME,
-        "version": config.AGENT_VERSION,
-        "cpu": get_cpu_usage(),
-        "memory": get_memory_usage(),
-        "swap": get_swap_usage(),
-        "disk_io": get_disk_io(),
-        "network_io": get_network_io(),
-        "system_load": get_system_load(),
-        "disk_space": get_disk_space(),
-    }
+    metrics = get_docker_metrics()
 
     response['metrics'] = metrics
 

@@ -19,12 +19,14 @@ def get_docker_metrics():
         container_name = container.name
         container_status = container.attrs['State']['Status']
         container_exit_code = container.attrs['State'].get('ExitCode', None)
+        health_status = container.attrs['State'].get('Health', {}).get('Status', 'unknown')
         
         container_metrics = {
             "id": container_id,
             "name": container_name,
             "status": container_status,
             "exitcode": container_exit_code,
+            "health": health_status
         }
         
         if container_status == "running":
@@ -34,7 +36,7 @@ def get_docker_metrics():
             blkio_stats = stats.get('blkio_stats', {}).get('io_service_bytes_recursive', [])
             net_stats = stats.get('networks', {})
             pids = stats.get('pids_stats', {}).get('current', 0)
-            
+                        
             memory_usage = memory_stats.get('usage', 0)
             memory_limit = memory_stats.get('limit', 0)
             memory_percentage = (memory_usage / memory_limit) * 100 if memory_limit > 0 else 0
@@ -60,8 +62,8 @@ def get_docker_metrics():
                     "cpu_usage": current_cpu_usage,
                 },
                 "blkio_stats": {
-                    "read_bytes": sum(blkio.get('value', 0) for blkio in blkio_stats if blkio.get('op') == 'read'),
-                    "write_bytes": sum(blkio.get('value', 0) for blkio in blkio_stats if blkio.get('op') == 'write'),
+                    "read_bytes": sum(blkio.get('value', 0) for blkio in blkio_stats if blkio.get('op') == 'read') if blkio_stats else 0,
+                    "write_bytes": sum(blkio.get('value', 0) for blkio in blkio_stats if blkio.get('op') == 'write') if blkio_stats else 0,
                 },
                 "networks": {
                     net_name: {

@@ -121,7 +121,7 @@ class CustomArgumentParser(argparse.ArgumentParser):
 # Main function to handle command-line arguments and trigger the corresponding actions
 def main():
     # Initialize the argument parser with a description
-    parser = CustomArgumentParser(description="OpenHubble CLI Agent Manager.")
+    parser = CustomArgumentParser(description="OpenHubble Agent Manager.")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
     # Define subcommands and their corresponding help descriptions

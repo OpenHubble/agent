@@ -1,6 +1,6 @@
 # OpenHubble Agent
 
-Lightweight **monitoring agent** written in **Python** with **Flask**, designed to collect system metrics and expose an API for data retrieval and visualization. Includes installation, configuration, update, and uninstallation guides.
+Lightweight **monitoring agent** written in **Python** with **FastAPI**, designed to collect system metrics and expose an API for data retrieval and visualization. Includes installation, configuration, update, and uninstallation guides.
 
 Got it! Here's a revised version of the paragraph that starts with "Before everything" and includes the installation context:
 

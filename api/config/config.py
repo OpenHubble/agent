@@ -47,7 +47,7 @@ project_config = toml.load(f"{PROJECT_DIRECTORY}/{PROJECT_CONFIG_FILE}")
 
 # ----- Read Project Configs (TOML) ----- #
 PROJECT_NAME = project_config.get("tool", {}).get("openhubble", {}).get("name", "N/A")
-PROJECT_VERSION = project_config.get("tool", {}).get("openhubble", {}).get("version", "N/A")
+PROJECT_VERSION, AGENT_VERSION = project_config.get("tool", {}).get("openhubble", {}).get("version", "N/A")
 
 # ----- Read User Configs (INI) ----- #
 ALLOWED_IPS = config["Server"]["ALLOWED_IPS"].split(",") if "Server" in config else []

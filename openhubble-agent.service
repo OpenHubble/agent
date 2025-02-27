@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=root
 WorkingDirectory=/opt/openhubble-agent
-ExecStart=/opt/openhubble-agent/.venv/bin/python3 /opt/openhubble-agent/wsgi.py
+ExecStart=/opt/openhubble-agent/.venv/bin/python3 /opt/openhubble-agent/asgi.py
 Restart=always
 Environment="PYTHONUNBUFFERED=1"
 

@@ -30,13 +30,11 @@ Dependencies:
 import psutil
 
 def get_swap_usage():
-    swap = psutil.swap_memory()
+    swap = psutil.swap_memory()  # Fetch once
 
-    swap_data = {
+    return {
         'total': swap.total,
         'used': swap.used,
         'free': swap.free,
         'percent': swap.percent
     }
-
-    return swap_data

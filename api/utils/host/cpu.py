@@ -31,15 +31,13 @@ import psutil
 
 def get_cpu_usage():
     total_cores = psutil.cpu_count(logical=True)
-    usage_per_core = psutil.cpu_percent(interval=1, percpu=True)
-    total_usage = psutil.cpu_percent(interval=1)
-    freq = psutil.cpu_freq().current
+    usage_per_core = psutil.cpu_percent(interval=0, percpu=True)  # No delay
+    total_usage = psutil.cpu_percent(interval=0)  # No delay
+    freq = psutil.cpu_freq().max  # More stable than .current
 
-    cpu_data = {
+    return {
         'total_cores': total_cores,
         'usage_per_core': usage_per_core,
         'total_usage': total_usage,
         'frequency_mhz': freq
     }
-
-    return cpu_data

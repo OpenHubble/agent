@@ -32,11 +32,9 @@ import psutil
 def get_network_io():
     network_io = psutil.net_io_counters()
 
-    network_data = {
+    return {
         'bytes_sent': network_io.bytes_sent,
         'bytes_received': network_io.bytes_recv,
         'packets_sent': network_io.packets_sent,
         'packets_received': network_io.packets_recv
     }
-
-    return network_data

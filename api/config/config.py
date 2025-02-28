@@ -15,12 +15,13 @@ IS_PRODUCTION = True if str(APP_MODE) == "PRODUCTION" else False
 PROJECT_DIRECTORY = ""
 
 # Config file: Specify Path and name
-CONFIG_FILE_NAME = "openhubble-agent.ini"
 CONFIG_FILE_PATH = ""
+CONFIG_FILE_NAME = "openhubble-agent.ini"
 
 # Log file: Specify Path and name
-LOG_FILE_NAME = "openhubble-agent.log"
 LOG_FILE_PATH = ""
+LOG_API_FILE_NAME = "openhubble-agent-api.log"
+LOG_APP_FILE_NAME = "openhubble-agent-app.log"
 
 # Project config file path
 PROJECT_CONFIG_FILE = "pyproject.toml"
@@ -32,11 +33,12 @@ if IS_PRODUCTION:
     LOG_FILE_PATH = "/var/log/openhubble-agent"
 else:
     PROJECT_DIRECTORY = "./test"
-    CONFIG_FILE_PATH = "./test"
-    LOG_FILE_PATH = "."
+    CONFIG_FILE_PATH = "./test/dev/config"
+    LOG_FILE_PATH = "./test/dev/log"
     
 # Log file
-LOG_DESTINATION = f"{LOG_FILE_PATH}/{LOG_FILE_NAME}"
+LOG_API_DESTINATION = f"{LOG_FILE_PATH}/{LOG_API_FILE_NAME}"
+LOG_APP_DESTINATION = f"{LOG_FILE_PATH}/{LOG_APP_FILE_NAME}"
 
 # Init Config
 config = configparser.ConfigParser()

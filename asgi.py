@@ -6,7 +6,7 @@ from logging.handlers import RotatingFileHandler
 import multiprocessing # Multi processor
 import uvicorn # Uvicorn
 
-# APP
+# API
 from api.main import app # API
 import api.config.config as config # Config
 

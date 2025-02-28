@@ -4,6 +4,7 @@
 
 import argparse  # Argument parsing
 import subprocess  # Executing system commands like systemctl
+import requests # Import requests
 
 from art import text2art  # To generate ASCII art
 from termcolor import cprint  # Colored terminal printing
@@ -43,7 +44,6 @@ def print_art():
         )
     )
 
-
 # Function to start the service using systemctl
 def start():
     cprint("Starting the service...", "green")
@@ -79,19 +79,21 @@ def logs(follow):
         cprint("Log following interrupted. Exiting...", "yellow")
 
 # Function to update the service by running the update.sh script
-def update():
+def update(get_confirmation=True):
     cprint("Updating the service...", "blue")
-    
-    # Confirmation prompt
-    confirmation = input("Are you sure you want to update the service? (yes/no): ").strip().lower()
-    
-    if confirmation in ["yes", "y"]:
-        update_script = "/opt/openhubble-agent/scripts/update.sh"
         
-        subprocess.run(["sudo", update_script])  # Run the update script
-        cprint("Service updated successfully.", "green")
-    else:
-        cprint("Updating aborted.", "yellow")
+    if get_confirmation:
+        # Confirmation prompt
+        confirmation = input("Are you sure you want to update the service? (yes/no): ").strip().lower()
+
+        if confirmation not in ["yes", "y"]:
+            cprint("Updating aborted.", "yellow")
+            return
+        
+    update_script = "/opt/openhubble-agent/scripts/update.sh"
+    
+    subprocess.run(["sudo", update_script])  # Run the update script
+    cprint("Service updated successfully.", "green")
 
 # Function to uninstall the service with a user confirmation prompt
 def uninstall():
@@ -112,6 +114,60 @@ def uninstall():
 def version():
     cprint(f"OpenHubble Agent {config.AGENT_VERSION}", "cyan", attrs=["bold"])
 
+# Method of checking new versions
+def get_github_releases():
+    url = "https://api.github.com/repos/OpenHubble/agent/releases"
+    response = requests.get(url)
+    releases = response.json()  # Get list of releases
+
+    return releases
+
+def compare_versions(current_version, releases):
+    # Find the latest release
+    latest_release = releases[0]
+    latest_version = latest_release["tag_name"] # Tag of release
+    name = latest_release["name"] # Name of release
+    release_url = latest_release["html_url"]  # Link to the release page
+
+    # Compare the versions
+    if current_version != latest_version:
+        messages = [
+            "+-----------------------------------------------+",
+            f"| New version is available!!!",
+            "|",
+            f"| {name}",
+            f"| Version: {latest_version}",
+            f"| Release link: {release_url}",
+            "+-----------------------------------------------+"
+        ]
+        return "\n".join(messages)
+    else:
+        return None
+
+def ask_user_to_update(current_version):
+    confirmation = input(f"You are already using {current_version}. Would you want to update? (yes/no): ").strip().lower()
+    
+    if confirmation in ["yes", "y"]:
+        update(False)
+    elif confirmation in ["no", "n"]:
+        cprint("Please update using this command: openhubble-agent update", "yellow")
+    else:
+        cprint("Invalid input. Please type '[y]es' or '[n]o'.", "red")
+        
+    print()
+
+def check_for_updates():
+    current_version = config.AGENT_VERSION
+    releases = get_github_releases()
+    compare = compare_versions(current_version, releases)
+    
+    if compare:
+        cprint(compare, "green")
+        
+        # Ask user if they want to update
+        if current_version != releases[0]["tag_name"]:
+            ask_user_to_update(current_version)
+
 # Custom argument parser to enhance the help output
 class CustomArgumentParser(argparse.ArgumentParser):
     def print_help(self):
@@ -120,6 +176,9 @@ class CustomArgumentParser(argparse.ArgumentParser):
 
 # Main function to handle command-line arguments and trigger the corresponding actions
 def main():
+    # Check for updates before handling the command
+    check_for_updates()
+
     # Initialize the argument parser with a description
     parser = CustomArgumentParser(description="OpenHubble Agent Manager.")
     subparsers = parser.add_subparsers(dest="command", help="Available commands")

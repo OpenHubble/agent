@@ -32,18 +32,14 @@ Dependencies:
 import psutil
 
 def get_disk_space():
-    partitions = psutil.disk_partitions()
-    partition_data = {}
-
-    for partition in partitions:
-        if 'loop' in partition.device or 'overlay' in partition.device:
-            continue
-        usage = psutil.disk_usage(partition.mountpoint)
-        partition_data[partition.device] = {
+    return {
+        p.device: {
             'total': usage.total,
             'used': usage.used,
             'free': usage.free,
             'percent': usage.percent
         }
-
-    return partition_data
+        for p in psutil.disk_partitions() 
+        if not any(x in p.device for x in ('loop', 'overlay'))
+        and (usage := psutil.disk_usage(p.mountpoint))
+    }

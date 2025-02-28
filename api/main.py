@@ -6,9 +6,6 @@ from fastapi.middleware.gzip import GZipMiddleware # Middlewares
 # ASYNC
 import asyncio
 
-# Message Pack
-import msgpack
-
 # Import your utils and config
 from api.utils.host.cpu import get_cpu_usage
 from api.utils.host.memory import get_memory_usage
@@ -74,10 +71,8 @@ async def metrics():
 @app.get("/api/metrics/host", dependencies=[Depends(allowed_ip)])
 async def host_metrics():
     data = await host_metrics_data()
-    # packed_data = msgpack.packb(data, use_bin_type=True)
     
     return data
-    # return Response(content=packed_data, media_type="application/msgpack")
 
 @app.get("/api/metrics/docker", dependencies=[Depends(allowed_ip)])
 async def docker_metrics():

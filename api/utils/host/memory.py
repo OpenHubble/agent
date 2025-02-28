@@ -30,13 +30,11 @@ Dependencies:
 import psutil
 
 def get_memory_usage():
-    memory = psutil.virtual_memory()
+    memory = psutil.virtual_memory()  # Fetch once
     
-    memory_data = {
+    return {
         'total': memory.total,
         'available': memory.available,
         'used': memory.used,
         'percent': memory.percent
     }
-    
-    return memory_data

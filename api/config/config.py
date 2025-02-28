@@ -20,8 +20,8 @@ CONFIG_FILE_NAME = "openhubble-agent.ini"
 
 # Log file: Specify Path and name
 LOG_FILE_PATH = ""
-LOG_API_FILE_NAME = "openhubble-agent-api.log"
-LOG_APP_FILE_NAME = "openhubble-agent-app.log"
+LOG_API_FILE_NAME = "openhubble-agent.log"
+# LOG_APP_FILE_NAME = "openhubble-agent-app.log"
 
 # Project config file path
 PROJECT_CONFIG_FILE = "pyproject.toml"
@@ -38,7 +38,7 @@ else:
     
 # Log file
 LOG_API_DESTINATION = f"{LOG_FILE_PATH}/{LOG_API_FILE_NAME}"
-LOG_APP_DESTINATION = f"{LOG_FILE_PATH}/{LOG_APP_FILE_NAME}"
+# LOG_APP_DESTINATION = f"{LOG_FILE_PATH}/{LOG_APP_FILE_NAME}"
 
 # Init Config
 config = configparser.ConfigParser()

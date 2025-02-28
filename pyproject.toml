@@ -1,6 +1,6 @@
 [tool.openhubble]
 name = "OpenHubble Agent"
-version = "2.3.1"
+version = "2.10.4"
 description = "Lightweight system monitoring agent"
 authors = ["OpenHubble Team <team@openhubble.com>"]
 

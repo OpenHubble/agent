@@ -31,12 +31,10 @@ import psutil
 
 def get_disk_io():
     disk_io = psutil.disk_io_counters()
-
-    io_data = {
+    
+    return {
         'read_bytes': disk_io.read_bytes,
         'write_bytes': disk_io.write_bytes,
         'read_count': disk_io.read_count,
         'write_count': disk_io.write_count
     }
-
-    return io_data

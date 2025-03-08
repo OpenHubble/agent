@@ -18,6 +18,7 @@ from api.utils.docker.docker import get_docker_metrics
 
 # Middleware
 from api.middlewares.ip import allowed_ip
+from api.middlewares.api_key import api_key
 
 # Config
 import api.config.config as config
@@ -48,11 +49,11 @@ async def host_metrics_data():
     }
 
 # IP Middleware as a Dependency
-@app.get("/api/ping", dependencies=[Depends(allowed_ip)])
+@app.get("/api/ping", dependencies=[Depends(allowed_ip), Depends(api_key)])
 async def ping():
     return {"message": "pong"}
 
-@app.get("/api/metrics", dependencies=[Depends(allowed_ip)])
+@app.get("/api/metrics", dependencies=[Depends(allowed_ip), Depends(api_key)])
 async def metrics():
     return {
         "metrics": {
@@ -68,12 +69,12 @@ async def metrics():
         }
     }
 
-@app.get("/api/metrics/host", dependencies=[Depends(allowed_ip)])
+@app.get("/api/metrics/host", dependencies=[Depends(allowed_ip), Depends(api_key)])
 async def host_metrics():
     data = await host_metrics_data()
     
     return data
 
-@app.get("/api/metrics/docker", dependencies=[Depends(allowed_ip)])
+@app.get("/api/metrics/docker", dependencies=[Depends(allowed_ip), Depends(api_key)])
 async def docker_metrics():
     return {"metrics": get_docker_metrics()}

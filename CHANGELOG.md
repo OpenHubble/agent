@@ -5,24 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unleased]
+## [2.18.10] - 2025-03-08
 
 ### Added
 
-- Changelog
+- Docker metrics method optimization
+- NetIO/BlockIO incremental updates
+- API KEY implementation
+- API KEY middleware
+- FastAPI docs
 
 ### Improved
 
-- Docker metrics method optimization
+- New version validation in update
+- Secure communication
 
 ### Removed
 
-- Removal of Git-based updates
-
-### Fixed
-
-- NetIO/BlockIO incremental issue
-- New version validation in update
+- Git-based updates
 
 ## [2.10.4] - 2025-02-01
 

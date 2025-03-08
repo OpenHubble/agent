@@ -24,7 +24,20 @@ from api.middlewares.api_key import api_key
 import api.config.config as config
 
 # Init FastAPI app
-app = FastAPI()
+app = FastAPI(
+    title="OpenHubble Agent",
+    description="API for retrieving various system and Docker metrics. Secure access requires an API key via the X-API-KEY header.",
+    version=config.AGENT_VERSION,
+    license_info={
+        "name": "MIT",
+        "url": "https://github.com/OpenHubble/agent/blob/main/LICENSE",
+    },
+    openapi_tags=[
+        {"name": "Agent", "description": "Operations related to Agent"},
+        {"name": "Metrics", "description": "Operations related to system metrics"},
+    ]
+)
+
 app.add_middleware(GZipMiddleware, minimum_size=500) # Implement use GZIP
 
 async def host_metrics_data():
@@ -49,12 +62,28 @@ async def host_metrics_data():
     }
 
 # IP Middleware as a Dependency
-@app.get("/api/ping", dependencies=[Depends(allowed_ip), Depends(api_key)])
+@app.get("/api/ping", dependencies=[Depends(allowed_ip), Depends(api_key)], tags=['Agent'])
 async def ping():
+    """
+    Ping the API to check if it's live.
+    
+    This endpoint checks the health of the server.
+
+    **Headers**:
+    - `X-API-KEY`: The API key required for authentication.
+    """
+    
     return {"message": "pong"}
 
-@app.get("/api/metrics", dependencies=[Depends(allowed_ip), Depends(api_key)])
+@app.get("/api/metrics", dependencies=[Depends(allowed_ip), Depends(api_key)], tags=['Metrics'])
 async def metrics():
+    """
+    Get basic metrics of the system (CPU, memory, swap, disk IO, etc.).
+
+    **Headers**:
+    - `X-API-KEY`: The API key required for authentication.
+    """
+    
     return {
         "metrics": {
             "hostname": config.HOST_NAME,
@@ -69,12 +98,28 @@ async def metrics():
         }
     }
 
-@app.get("/api/metrics/host", dependencies=[Depends(allowed_ip), Depends(api_key)])
+@app.get("/api/metrics/host", dependencies=[Depends(allowed_ip), Depends(api_key)], tags=['Metrics'])
 async def host_metrics():
+    """
+    Get detailed host metrics.
+
+    This includes information like CPU usage, memory usage, disk IO, and network IO.
+
+    **Headers**:
+    - `X-API-KEY`: The API key required for authentication.
+    """
+    
     data = await host_metrics_data()
     
     return data
 
-@app.get("/api/metrics/docker", dependencies=[Depends(allowed_ip), Depends(api_key)])
+@app.get("/api/metrics/docker", dependencies=[Depends(allowed_ip), Depends(api_key)], tags=['Metrics'])
 async def docker_metrics():
+    """
+    Get Docker container metrics.
+
+    **Headers**:
+    - `X-API-KEY`: The API key required for authentication.
+    """
+    
     return {"metrics": get_docker_metrics()}

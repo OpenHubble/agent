@@ -29,12 +29,33 @@ Dependencies:
 
 import psutil
 
+previous_disk_io = None
+
 def get_disk_io():
+    global previous_disk_io
     disk_io = psutil.disk_io_counters()
-    
+
+    if previous_disk_io is None:
+        previous_disk_io = disk_io
+        return {
+            'read_bytes': 0,
+            'write_bytes': 0,
+            'read_count': 0,
+            'write_count': 0
+        }
+
+    # Calculate the diff
+    diff_read_bytes = disk_io.read_bytes - previous_disk_io.read_bytes
+    diff_write_bytes = disk_io.write_bytes - previous_disk_io.write_bytes
+    diff_read_count = disk_io.read_count - previous_disk_io.read_count
+    diff_write_count = disk_io.write_count - previous_disk_io.write_count
+
+    # Update the previous values for the next call
+    previous_disk_io = disk_io
+
     return {
-        'read_bytes': disk_io.read_bytes,
-        'write_bytes': disk_io.write_bytes,
-        'read_count': disk_io.read_count,
-        'write_count': disk_io.write_count
+        'read_bytes': diff_read_bytes,
+        'write_bytes': diff_write_bytes,
+        'read_count': diff_read_count,
+        'write_count': diff_write_count
     }

@@ -58,3 +58,4 @@ ALLOWED_IPS = config["Server"]["ALLOWED_IPS"].split(",") if "Server" in config e
 BIND_IP = config["Agent"]["BIND_IP"] if "Agent" in config else "0.0.0.0"
 PORT = config["Agent"]["PORT"] if "Agent" in config else "9703"
 HOST_NAME = config["Host"]["HOSTNAME"] if "Host" in config else "localhost"
+API_KEY = config["API"]["API_KEY"] if "API" in config else ""

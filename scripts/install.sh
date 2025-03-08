@@ -6,60 +6,58 @@ if [ "$EUID" -ne 0 ]; then
   exit 1
 fi
 
-# Update packages
+# Install dependencies
 apt update -y
+apt install -y python3 python3-venv python3-pip curl tar jq
 
-# Install some requirements
-apt install -y git python3 python3-venv python3-pip
+# Set install directory
+INSTALL_DIR="/opt/openhubble-agent"
 
-# Create directories
-echo "Creating directories..."
-mkdir -p /opt/openhubble-agent # App source
-mkdir -p /etc/openhubble-agent # Configurations
-mkdir -p /var/log/openhubble-agent # Logs
+# Get the latest release tag from GitHub
+LATEST_VERSION=$(curl -s "https://api.github.com/repos/OpenHubble/agent/releases/latest" | jq -r '.tag_name')
 
-# Change directory to source directory
-cd /opt/openhubble-agent
-
-# Clone the project using git
-echo "Cloning the project..."
-git clone https://github.com/OpenHubble/agent . || {
-  echo "Git clone failed."
+if [ -z "$LATEST_VERSION" ] || [ "$LATEST_VERSION" == "null" ]; then
+  echo "Failed to get latest version."
   exit 1
-}
+fi
+
+TARBALL_URL="https://api.github.com/repos/OpenHubble/agent/tarball/$LATEST_VERSION"
+
+echo "Installing OpenHubble Agent version $LATEST_VERSION..."
+
+# Create directories if not exist
+mkdir -p "$INSTALL_DIR"
+mkdir -p "/etc/openhubble-agent" # Ensure the config directory exists
+mkdir -p "/var/log/openhubble-agent" # Logs directory
+
+# Download and extract the latest version
+curl -L "$TARBALL_URL" -o /tmp/openhubble-agent.tar.gz
+tar -xzf /tmp/openhubble-agent.tar.gz --strip-components=1 -C "$INSTALL_DIR"
 
 # Copy the config file to the config directory
 echo "Setting up configurations..."
-cp example/openhubble.ini.example /etc/openhubble-agent/openhubble-agent.ini || {
+cp "$INSTALL_DIR/example/openhubble.ini.example" /etc/openhubble-agent/openhubble-agent.ini || {
   echo "Failed to copy configuration file."
   exit 1
 }
 
-# Create a hidden virtual environment
+# Create virtual environment
 echo "Creating virtual environment..."
-python3 -m venv .venv || {
-  echo "Failed to create virtual environment."
-  exit 1
-}
+python3 -m venv "$INSTALL_DIR/.venv"
 
-# Install app modules
-echo "Installing modules..."
-/opt/openhubble-agent/.venv/bin/python3 -m pip install --no-cache-dir -r requirements.txt || {
-  echo "Failed to install Python modules."
-  exit 1
-}
+# Install Python dependencies
+echo "Installing dependencies..."
+"$INSTALL_DIR/.venv/bin/python3" -m pip install --no-cache-dir -r "$INSTALL_DIR/requirements.txt"
 
-# Make cli.py executable
-echo "Making cli.py executable..."
-chmod +x /opt/openhubble-agent/cli/wrapper.sh
+# Make Agent executable
+chmod +x "$INSTALL_DIR/cli/wrapper.sh"
 
-# Create a symbolic link to make openhubble-agent command available
-echo "Creating symbolic link for openhubble-agent command..."
-ln -sf /opt/openhubble-agent/cli/wrapper.sh /usr/local/bin/openhubble-agent
+# Create symbolic link
+ln -sf "$INSTALL_DIR/cli/wrapper.sh" /usr/local/bin/openhubble-agent
 
 # Copy the service file for systemctl
 echo "Setting up service..."
-cp /opt/openhubble-agent/openhubble-agent.service /etc/systemd/system/ || {
+cp "$INSTALL_DIR/openhubble-agent.service" /etc/systemd/system/ || {
   echo "Failed to copy service file."
   exit 1
 }
@@ -68,4 +66,4 @@ cp /opt/openhubble-agent/openhubble-agent.service /etc/systemd/system/ || {
 echo "Reloading services..."
 systemctl daemon-reload
 
-echo "OpenHubble Agent has been installed successfully."
+echo "OpenHubble Agent ($LATEST_VERSION) has been installed successfully."

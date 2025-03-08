@@ -29,12 +29,33 @@ Dependencies:
 
 import psutil
 
+previous_network_io = None
+
 def get_network_io():
+    global previous_network_io
     network_io = psutil.net_io_counters()
 
+    if previous_network_io is None:
+        previous_network_io = network_io
+        return {
+            'bytes_sent': 0,
+            'bytes_received': 0,
+            'packets_sent': 0,
+            'packets_received': 0
+        }
+
+    # Calculate the diff
+    diff_bytes_sent = network_io.bytes_sent - previous_network_io.bytes_sent
+    diff_bytes_received = network_io.bytes_recv - previous_network_io.bytes_recv
+    diff_packets_sent = network_io.packets_sent - previous_network_io.packets_sent
+    diff_packets_received = network_io.packets_recv - previous_network_io.packets_recv
+
+    # Update the previous values for the next call
+    previous_network_io = network_io
+
     return {
-        'bytes_sent': network_io.bytes_sent,
-        'bytes_received': network_io.bytes_recv,
-        'packets_sent': network_io.packets_sent,
-        'packets_received': network_io.packets_recv
+        'bytes_sent': diff_bytes_sent,
+        'bytes_received': diff_bytes_received,
+        'packets_sent': diff_packets_sent,
+        'packets_received': diff_packets_received
     }

@@ -80,18 +80,30 @@ def logs(follow):
 
 # Function to update the service by running the update.sh script
 def update(get_confirmation=True):
-    cprint("Updating the service...", "blue")
-        
-    if get_confirmation:
-        # Confirmation prompt
-        confirmation = input("Are you sure you want to update the service? (yes/no): ").strip().lower()
+    current_version = config.CLI_VERSION
+    releases = get_github_releases()
+    
+    # Get the latest version available
+    latest_version = releases[0]["tag_name"] if releases else None
 
+    if not latest_version:
+        cprint("Failed to check for updates. Please try again later.", "red")
+        return
+
+    # Check if an update is actually needed
+    if current_version == latest_version:
+        cprint(f"You are already using the latest version ({current_version}). No update needed.", "yellow")
+        return
+
+    cprint(f"Updating to version {latest_version}...", "blue")
+
+    if get_confirmation:
+        confirmation = input("Are you sure you want to update the service? (yes/no): ").strip().lower()
         if confirmation not in ["yes", "y"]:
             cprint("Updating aborted.", "yellow")
             return
-        
-    update_script = "/opt/openhubble-agent/scripts/update.sh"
-    
+
+    update_script = "/opt/openhubble-cli/scripts/update.sh"
     subprocess.run(["sudo", update_script])  # Run the update script
     cprint("Service updated successfully.", "green")
 

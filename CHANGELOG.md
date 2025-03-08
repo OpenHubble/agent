@@ -9,8 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Docker metrics method optimization
-- NetIO/BlockIO incremental updates
 - API KEY implementation
 - API KEY middleware
 - FastAPI docs
@@ -18,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Improved
 
 - New version validation in update
+- NetIO/BlockIO Delta value
 - Secure communication
 
 ### Removed

@@ -62,6 +62,10 @@ cp "$INSTALL_DIR/openhubble-agent.service" /etc/systemd/system/ || {
   exit 1
 }
 
+# Set permissions for db directory
+chown -R root:root "$INSTALL_DIR/db"
+chmod 755 "$INSTALL_DIR/db"
+
 # Reload Daemon
 echo "Reloading services..."
 systemctl daemon-reload

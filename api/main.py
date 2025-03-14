@@ -16,6 +16,9 @@ from api.utils.host.system_load import get_system_load
 from api.utils.host.disk_space import get_disk_space
 from api.utils.docker.docker import get_docker_metrics
 
+# Monitoring
+from api.events.monitor import monitor_metrics
+
 # Middleware
 from api.middlewares.ip import allowed_ip
 from api.middlewares.api_key import api_key
@@ -123,3 +126,8 @@ async def docker_metrics():
     """
     
     return {"metrics": get_docker_metrics()}
+
+@app.on_event("startup")
+async def startup_event():
+    asyncio.create_task(monitor_metrics())
+    # logger.info("Started metrics monitoring task")

@@ -1,17 +1,77 @@
-[Server]
-ALLOWED_IPS = 10.1.1.0/24, 10.1.40.24
+# OpenHubble Agent Configuration File
+# -----------------------------------
+# This is the configuration file for the OpenHubble Agent, a lightweight service
+# that monitors system and Docker metrics and pushes events to the Survey service.
+# Learn more about the project:
+# - GitHub: https://github.com/openhubble/agent
+# - Product Page: https://openhubble.com/products/agent
 
+# -------------------
+# | Server Settings |
+# -------------------
+# This section controls network access to the Agent, defining which IP addresses
+# are allowed to connect to its API endpoints.
+[Server]
+# Comma-separated list of allowed IP addresses or CIDR ranges (e.g., 192.168.1.0/24)
+# that can access the Agent. Use 0.0.0.0/0 to allow all IPs (not recommended for production).
+ALLOWED_IPS = 0.0.0.0/0
+
+# ------------------
+# | Agent Settings |
+# ------------------
+# This section configures how the Agent service runs, including the IP and port
+# it binds to for serving API requests.
 [Agent]
+# IP address to bind the Agent to (0.0.0.0 means all network interfaces).
 BIND_IP = 0.0.0.0
+# Port to run the Agent on (default is 9703). Ensure this is free on your system.
 PORT = 9703
 
+# -----------------
+# | Host Settings |
+# -----------------
+# This section identifies the host where the Agent is running, used for tracking
+# metrics and events in Survey and the Cloud API.
 [Host]
-HOSTNAME = Openhubble Agent Server
+# Name of this host (e.g., a hostname or nickname). Used to identify it in Survey and Cloud API.
+HOSTNAME = AmirMBP
 
+# ----------------
+# | API Settings |
+# ----------------
+# This section provides authentication details for interacting with the Cloud API,
+# which manages hosts, users, and triggers.
 [API]
-API_KEY = set_any_api_key_you_want
+# API key for authenticating with the Cloud API. Get this from your Cloud Console.
+API_KEY = your_api_key_here
 
+# ------------------
+# | Survey Settings |
+# ------------------
+# This section configures communication with the Survey service, which receives
+# event-driven metric updates from the Agent.
 [Survey]
+# URL of the Survey service (e.g., http://survey:3001 or http://192.168.1.100:3001).
+# Point this to your Survey instance.
 SURVEY_URL = http://survey:3001
-ACCESS_TOKEN = user_access_token_here_from_api
-HOST_TOKEN = host_specific_token_here_from_api
+# User-specific access token for Survey authentication. Set this in your Cloud Console.
+ACCESS_TOKEN = user_access_token_here
+# Host-specific token for this Agent instance. Unique per host, generated in Cloud Console.
+HOST_TOKEN = host_specific_token_here
+
+# ----------------------
+# | Monitoring Settings |
+# ----------------------
+# This section controls how the Agent monitors metrics and pushes events, including
+# timing, retries, and timeouts for reliability.
+[Monitoring]
+# How often (in seconds) to check metrics (e.g., 15, 30, 60). Lower values increase load.
+MONITOR_INTERVAL = 30
+# How often (in seconds) to fetch updated triggers from Cloud API (e.g., 600 = 10 minutes).
+TRIGGER_UPDATE_INTERVAL = 600
+# Timeout (in seconds) for HTTP requests to Survey or Cloud API. Increase if network is slow.
+REQUEST_TIMEOUT = 5
+# Maximum number of retries for failed requests to Survey. Set to 0 to disable retries.
+MAX_RETRIES = 3
+# Delay (in seconds) between retry attempts. Helps avoid overwhelming the network.
+RETRY_DELAY = 2
